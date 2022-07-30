@@ -1,8 +1,6 @@
 import random
 import copy
-from fpdf import FPDF
-import textwrap
-
+from PIL import Image, ImageFont, ImageDraw
 
 portuguese_alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y" ,"Z","Á","É","Í","Ó","Ú"]
 
@@ -75,6 +73,7 @@ for i in range(columns_and_lines_quantity):
         if pannel[i][j] == 0:
             pannel[i][j] = random.choice(portuguese_alphabet)
 
+
 with open("caca_palavras.txt", "w") as caca_palavras:
     for row in pannel:
         caca_palavras.write(' '.join([str(a) for a in row]) + '\n')
@@ -86,3 +85,31 @@ with open("caca_palavras.txt", "w") as caca_palavras:
 
     for row in cheat_pannel:
         caca_palavras.write(' '.join([str(a) for a in row]) + '\n')
+
+
+filename = "caca_palavras.png"
+fnt = ImageFont.truetype("consola.ttf",20, encoding="unic")
+image = Image.new(mode = "RGB", size = (1000 ,1800), color = "white")
+draw = ImageDraw.Draw(image)
+height_offset = 10
+width_offset = 250
+draw.text((300,height_offset),"Caça Palavras Gerado Automaticamente", font=fnt, fill=(0,0,0))
+height_offset = 40
+for row in pannel:
+    draw.text((width_offset,height_offset),' '.join([str(a) for a in row]), font=fnt, fill=(0,0,0))
+    height_offset+=20
+
+height_offset+=20
+draw.text((width_offset,height_offset),"---PALAVRAS CHAVE---", font=fnt, fill=(0,0,0))
+height_offset+=20
+for word in random_words:
+    draw.text((width_offset,height_offset),word, font=fnt, fill=(0,0,0))
+    height_offset+=20
+height_offset+=50
+for row in cheat_pannel:
+    row = ' '.join([str(a) for a in row]).replace("0", "-")
+    draw.text((width_offset,height_offset),row, font=fnt, fill=(0,0,0))
+    height_offset+=20
+
+image.save(filename)
+
