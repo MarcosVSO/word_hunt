@@ -4,7 +4,7 @@ from PIL import Image, ImageFont, ImageDraw
 
 portuguese_alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y" ,"Z","Á","É","Í","Ó","Ú"]
 
-columns_and_lines_quantity = 30
+columns_and_lines_quantity = 25
 number_words = 15
 
 pannel = [[0 for x in range(columns_and_lines_quantity)] for y in range(columns_and_lines_quantity)]
@@ -88,28 +88,33 @@ with open("caca_palavras.txt", "w") as caca_palavras:
 
 
 filename = "caca_palavras.png"
-fnt = ImageFont.truetype("consola.ttf",20, encoding="unic")
-image = Image.new(mode = "RGB", size = (1000 ,1800), color = "white")
+fnt = ImageFont.truetype("consola.ttf",50, encoding="unic")
+page_width = 2480
+page_heigth = 1748
+image = Image.new(mode = "RGB", size = (page_heigth,page_width ), color = "white")
 draw = ImageDraw.Draw(image)
 height_offset = 10
-width_offset = 250
-draw.text((300,height_offset),"Caça Palavras Gerado Automaticamente", font=fnt, fill=(0,0,0))
-height_offset = 40
+width_offset = (page_width/2) - 1000
+draw.text((width_offset,height_offset),"Caça Palavras By Relâmpago Marquim", font=fnt, fill=(0,0,0))
+height_offset += 100
 for row in pannel:
     draw.text((width_offset,height_offset),' '.join([str(a) for a in row]), font=fnt, fill=(0,0,0))
-    height_offset+=20
+    height_offset+=50
 
-height_offset+=20
-draw.text((width_offset,height_offset),"---PALAVRAS CHAVE---", font=fnt, fill=(0,0,0))
-height_offset+=20
+height_offset+=50
+
+fnt = ImageFont.truetype("consola.ttf",40, encoding="unic")
 for word in random_words:
     draw.text((width_offset,height_offset),word, font=fnt, fill=(0,0,0))
-    height_offset+=20
+    height_offset+=40
 height_offset+=50
+
+fnt = ImageFont.truetype("consola.ttf",15, encoding="unic")
+
 for row in cheat_pannel:
     row = ' '.join([str(a) for a in row]).replace("0", "-")
     draw.text((width_offset,height_offset),row, font=fnt, fill=(0,0,0))
-    height_offset+=20
+    height_offset+=15
 
 image.save(filename)
 
